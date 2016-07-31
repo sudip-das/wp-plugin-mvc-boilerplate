@@ -6,11 +6,11 @@
  * Time: 01:00 AM
  */
 
-namespace company_plugin\controller\front;
+namespace pluginname\controller\front;
 
-use company_plugin\App;
-use company_plugin\component\Util;
-use company_plugin\controller\Base;
+use pluginname\App;
+use pluginname\component\Util;
+use pluginname\controller\Base;
 
 
 class Common extends Base {

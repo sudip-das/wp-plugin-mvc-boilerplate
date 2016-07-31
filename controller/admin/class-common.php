@@ -1,9 +1,9 @@
 <?php
-namespace company_plugin\controller\admin;
+namespace pluginname\controller\admin;
 
 
-use company_plugin\App;
-use company_plugin\controller\Base;
+use pluginname\App;
+use pluginname\controller\Base;
 
 class Common extends Base {
 

@@ -5,9 +5,9 @@
  * Date: 12/05/2016
  * Time: 01:47 PM
  */
-namespace company_plugin\component;
+namespace pluginname\component;
 
-use company_plugin\App;
+use pluginname\App;
 
 
 class Util_Scripts_Styles {

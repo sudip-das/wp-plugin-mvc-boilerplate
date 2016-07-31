@@ -1,5 +1,5 @@
 <?php
-namespace company_plugin\component;
+namespace pluginname\component;
 
 class Util_Request {
 

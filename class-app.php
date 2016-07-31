@@ -5,13 +5,13 @@
  * Date: 2015-08-18
  * Time: 11:57 AM
  */
-namespace company_plugin;
+namespace pluginname;
 
-use company_plugin\component\Util;
-use company_plugin\component\Util_Request;
-use company_plugin\controller\admin\Common as Admin_Common;
-use company_plugin\controller\common\Common;
-use company_plugin\controller\front\Common as Front_Common;
+use pluginname\component\Util;
+use pluginname\component\Util_Request;
+use pluginname\controller\admin\Common as Admin_Common;
+use pluginname\controller\common\Common;
+use pluginname\controller\front\Common as Front_Common;
 
 class App {
 
@@ -85,7 +85,7 @@ class App {
 
 
 
-        self::$root_namespace = 'company_plugin';
+        self::$root_namespace = 'pluginname';
 
 
 

@@ -17,7 +17,7 @@
  * Author URI:        teleioolab.com
  * License:           GPL-2.0+
  * License URI:       http://teleioolab.com
- * Text Domain:       company_plugin
+ * Text Domain:       pluginname
  * Domain Path:       /asset/lang
  */
 ?>
@@ -26,7 +26,7 @@
 include dirname(__FILE__) . '/class-app.php';
 
 
-\company_plugin\App::init();
+\pluginname\App::init();
 
 
 ?>
@@ -34,6 +34,6 @@ include dirname(__FILE__) . '/class-app.php';
 /*
  * Replace the followings :
  * 0. Replace "company-plugin" plugin directory name with your company name-plugin name
- * 1. Root namespace "company_plugin"  with your plugin namespace
+ * 1. Root namespace "pluginname"  with your plugin namespace
  */
 ?>

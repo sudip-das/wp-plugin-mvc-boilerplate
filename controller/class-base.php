@@ -6,10 +6,10 @@
  * Time: 02:28 PM
  */
 
-namespace company_plugin\controller;
+namespace pluginname\controller;
 
 
-use company_plugin\App;
+use pluginname\App;
 
 
 class Base {

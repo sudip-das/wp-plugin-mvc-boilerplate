@@ -1,7 +1,7 @@
 <?php
-namespace company_plugin\component;
+namespace pluginname\component;
 
-use company_plugin\App;
+use pluginname\App;
 
 class Util {
 
