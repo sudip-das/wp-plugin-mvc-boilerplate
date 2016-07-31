@@ -1,21 +1,7 @@
 <?php
-namespace pluginname\component;
+namespace plugin_namespace\component;
 
 class Settings_Helper {
-
-    /**
-     * settings sections array
-     *
-     * @var array
-     */
-    private $settings_sections = array();
-
-    /**
-     * Settings fields array
-     *
-     * @var array
-     */
-    private $settings_fields = array();
 
     /**
      * Singleton instance
@@ -23,7 +9,18 @@ class Settings_Helper {
      * @var object
      */
     private static $_instance;
-
+    /**
+     * settings sections array
+     *
+     * @var array
+     */
+    private $settings_sections = array();
+    /**
+     * Settings fields array
+     *
+     * @var array
+     */
+    private $settings_fields = array();
     private $page_slug;
 
     public function __construct( $page_slug ) {
@@ -147,18 +144,12 @@ class Settings_Helper {
     }
 
     /**
-     * Get field description for display
+     * Displays a url field for a settings field
      *
      * @param array   $args settings field args
      */
-    public function get_field_description( $args ) {
-        if ( ! empty( $args['desc'] ) ) {
-            $desc = sprintf( '<p class="description">%s</p>', $args['desc'] );
-        } else {
-            $desc = '';
-        }
-
-        return $desc;
+    function callback_url( $args ) {
+        $this->callback_text( $args );
     }
 
     /**
@@ -188,12 +179,37 @@ class Settings_Helper {
     }
 
     /**
-     * Displays a url field for a settings field
+     * Get the value of a settings field
+     *
+     * @param string  $option  settings field name
+     * @param string  $section the section name this field belongs to
+     * @param string  $default default text if it's not found
+     * @return string
+     */
+    function get_option( $option, $section, $default = '' ) {
+
+        $options = get_option( $section );
+
+        if ( isset( $options[$option] ) ) {
+            return $options[$option];
+        }
+
+        return $default;
+    }
+
+    /**
+     * Get field description for display
      *
      * @param array   $args settings field args
      */
-    function callback_url( $args ) {
-        $this->callback_text( $args );
+    public function get_field_description( $args ) {
+        if ( ! empty( $args['desc'] ) ) {
+            $desc = sprintf( '<p class="description">%s</p>', $args['desc'] );
+        } else {
+            $desc = '';
+        }
+
+        return $desc;
     }
 
     /**
@@ -485,25 +501,6 @@ class Settings_Helper {
         }
 
         return false;
-    }
-
-    /**
-     * Get the value of a settings field
-     *
-     * @param string  $option  settings field name
-     * @param string  $section the section name this field belongs to
-     * @param string  $default default text if it's not found
-     * @return string
-     */
-    function get_option( $option, $section, $default = '' ) {
-
-        $options = get_option( $section );
-
-        if ( isset( $options[$option] ) ) {
-            return $options[$option];
-        }
-
-        return $default;
     }
 
     /**

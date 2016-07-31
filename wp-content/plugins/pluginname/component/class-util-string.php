@@ -1,5 +1,5 @@
 <?php
-namespace pluginname\component;
+namespace plugin_namespace\component;
 
 class Util_String {
 
@@ -22,6 +22,14 @@ class Util_String {
 
 		return $s;
 	}
+
+	static function clean($data,$params = array()){
+		return self::removeAllSplCharacters($data,$params);
+	}
+
+	/*
+	 * Calls removeAllSplCharacter. Use that instead.
+	 */
 
 	/**
 	 * @param $data
@@ -81,14 +89,6 @@ class Util_String {
 
 		return $lc;
 	}
-
-	/*
-	 * Calls removeAllSplCharacter. Use that instead.
-	 */
-	static function clean($data,$params = array()){
-		return self::removeAllSplCharacters($data,$params);
-	}
-
 
     static public function generateSlug($text)
     {

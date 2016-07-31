@@ -5,13 +5,13 @@
  * Date: 2015-08-18
  * Time: 11:57 AM
  */
-namespace pluginname;
+namespace plugin_namespace;
 
-use pluginname\component\Util;
-use pluginname\component\Util_Request;
-use pluginname\controller\admin\Common as Admin_Common;
-use pluginname\controller\common\Common;
-use pluginname\controller\front\Common as Front_Common;
+use plugin_namespace\component\Util;
+use plugin_namespace\component\Util_Request;
+use plugin_namespace\controller\admin\Common as Admin_Common;
+use plugin_namespace\controller\common\Common;
+use plugin_namespace\controller\front\Common as Front_Common;
 
 class App {
 
@@ -53,6 +53,8 @@ class App {
 
     static $configs;
     static $container;
+    static $_loadedClasses = array();
+
     public static  function init(){
 
 
@@ -85,7 +87,7 @@ class App {
 
 
 
-        self::$root_namespace = 'pluginname';
+        self::$root_namespace = 'plugin_namespace';
 
 
 
@@ -135,79 +137,6 @@ class App {
     }
 
 
-    static $_loadedClasses = array();
-    static function class_autoload($cls){
-
-
-
-        $cls = ltrim($cls, '\\');
-        if(strpos($cls, __NAMESPACE__) !== 0)
-            return;
-
-
-
-        $cls = str_replace(array(__NAMESPACE__), array(''), $cls);
-
-        $cls = ltrim($cls,'\\');
-
-        $arr = explode('\\',$cls);
-
-
-        $p = '';
-        $t = count($arr);
-        $i = 0;
-        foreach($arr as $i=>$a){
-
-            if($i == ($t-1)) {
-
-                $a = strtolower($a);
-
-                $a = str_replace('_','-',$a);
-
-                $p .= 'class-' . $a;
-            }
-            else
-                $p .= $a . DIRECTORY_SEPARATOR;
-
-
-        }
-
-
-
-
-
-        $path = self::$dir_path . DIRECTORY_SEPARATOR . $p . '.php';
-
-
-        $md5FileName = md5($path);
-        if(!isset(self::$_loadedClasses[$md5FileName])) {
-
-                include $path;
-
-            self::$_loadedClasses[$md5FileName] = $path;
-
-
-
-        }
-
-    }
-
-
-
-
-
-    /**
-     * Run on activation.
-     * @access public
-     * @since 1.0.0
-     * @return void
-     */
-    /*
-    public function cb_registerActivationHook_activation () {
-        //$this->register_plugin_version();
-        //$this->flush_rewrite_rules();
-    } // End activation()
-*/
 
     static function load_base_classes(){
 
@@ -242,6 +171,22 @@ class App {
 
     }
 
+
+
+
+
+    /**
+     * Run on activation.
+     * @access public
+     * @since 1.0.0
+     * @return void
+     */
+    /*
+    public function cb_registerActivationHook_activation () {
+        //$this->register_plugin_version();
+        //$this->flush_rewrite_rules();
+    } // End activation()
+*/
     static function tasks(){
 
         $tasks = isset(self::$configs['tasks'])?self::$configs['tasks']:array();
@@ -292,7 +237,6 @@ class App {
         }
 
     }
-
 
     /**
      * @param $end either front or admin or common
@@ -387,7 +331,6 @@ class App {
 
     }
 
-
     static function _resolve_action_task( $endn, $hook, $controller_class, $action,$accepted_args, $priority, $condition_func ){
 
 
@@ -415,6 +358,45 @@ class App {
 //        }
     }
 
+    static function _resolve_task_check_condition($condition_func){
+
+
+
+
+        $return = true;
+
+        if( !empty($condition_func )){
+
+                $return = call_user_func($condition_func);
+
+        }
+
+        if( $return === true || $return === false ){
+
+        }
+        else{
+            $return = true;
+        }
+
+        return $return;
+    }
+
+    static function _reslove_task_get_controller_instance($endn, $controller_class){
+
+        $key = $endn . '_' . strtolower($controller_class);
+        if( empty(self::$container[$key]) ){
+
+            $cls = self::$root_namespace . '\\controller\\' . $endn . '\\' . $controller_class;
+
+
+
+            self::$container[$key] = new $cls();
+
+
+        }
+
+        return self::$container[$key];
+    }
 
     static function _resolve_filter_task( $endn, $hook, $controller_class, $action,$accepted_args, $priority, $condition_func ){
 
@@ -444,47 +426,60 @@ class App {
 //        }
     }
 
+    static function class_autoload($cls){
 
 
 
-
-    static function _resolve_task_check_condition($condition_func){
-
-
-
-
-        $return = true;
-
-        if( !empty($condition_func )){
-
-                $return = call_user_func($condition_func);
-
-        }
-
-        if( $return === true || $return === false ){
-
-        }
-        else{
-            $return = true;
-        }
-
-        return $return;
-    }
-    static function _reslove_task_get_controller_instance($endn, $controller_class){
-
-        $key = $endn . '_' . strtolower($controller_class);
-        if( empty(self::$container[$key]) ){
-
-            $cls = self::$root_namespace . '\\controller\\' . $endn . '\\' . $controller_class;
+        $cls = ltrim($cls, '\\');
+        if(strpos($cls, __NAMESPACE__) !== 0)
+            return;
 
 
 
-            self::$container[$key] = new $cls();
+        $cls = str_replace(array(__NAMESPACE__), array(''), $cls);
+
+        $cls = ltrim($cls,'\\');
+
+        $arr = explode('\\',$cls);
+
+
+        $p = '';
+        $t = count($arr);
+        $i = 0;
+        foreach($arr as $i=>$a){
+
+            if($i == ($t-1)) {
+
+                $a = strtolower($a);
+
+                $a = str_replace('_','-',$a);
+
+                $p .= 'class-' . $a;
+            }
+            else
+                $p .= $a . DIRECTORY_SEPARATOR;
 
 
         }
 
-        return self::$container[$key];
+
+
+
+
+        $path = self::$dir_path . DIRECTORY_SEPARATOR . $p . '.php';
+
+
+        $md5FileName = md5($path);
+        if(!isset(self::$_loadedClasses[$md5FileName])) {
+
+                include $path;
+
+            self::$_loadedClasses[$md5FileName] = $path;
+
+
+
+        }
+
     }
 
 

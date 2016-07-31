@@ -1,11 +1,17 @@
 <?php
-namespace pluginname\controller\common;
+namespace plugin_namespace\controller\common;
 
 
-use pluginname\App;
-use pluginname\controller\Base;
+use plugin_namespace\App;
+use plugin_namespace\controller\Base;
 
 class Common extends Base {
+
+    function acb_widgets_init(){
+
+
+
+    }
 
     protected function init(){
 
@@ -21,16 +27,12 @@ class Common extends Base {
 
 
 
-    }
-
-
-
-
-    public static function load_plugin_textdomain () {
-
-
     } // End load_plugin_textdomain()
 
+public static function load_plugin_textdomain () {
+
+
+    }
 
     function addWidgets(){
 
@@ -42,12 +44,6 @@ class Common extends Base {
 
 
             });
-
-
-    }
-
-    function acb_widgets_init(){
-
 
 
     }

@@ -6,14 +6,19 @@
  * Time: 01:00 AM
  */
 
-namespace pluginname\controller\front;
+namespace plugin_namespace\controller\front;
 
-use pluginname\App;
-use pluginname\component\Util;
-use pluginname\controller\Base;
+use plugin_namespace\App;
+use plugin_namespace\component\Util;
+use plugin_namespace\controller\Base;
 
 
 class Common extends Base {
+
+    function deregister_styles(){
+
+
+    }
 
     protected function init(){
 
@@ -26,6 +31,10 @@ class Common extends Base {
 
     }
 
+    function rewrite_rules(){
+
+    }
+
     function add_shortcodes(){
 
         add_shortcode( 'tllb_list_videos', function( $atts , $content = null ) {
@@ -33,16 +42,6 @@ class Common extends Base {
 
         });
 
-
-
-    }
-
-
-    function rewrite_rules(){
-
-    }
-
-    function deregister_styles(){
 
 
     }

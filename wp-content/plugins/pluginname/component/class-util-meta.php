@@ -1,5 +1,5 @@
 <?php
-namespace pluginname\component;
+namespace plugin_namespace\component;
 
 class Util_Meta {
 

@@ -1,5 +1,5 @@
 <?php
-namespace pluginname\component;
+namespace plugin_namespace\component;
 
 class Util_Date {
 
@@ -24,6 +24,32 @@ class Util_Date {
         return($finalDt);
     }
 
+    public static function _timestamp($dtTime, $operationType = 'add')
+    {
+
+        $endDtPos = strpos($dtTime,':');
+        if($endDtPos === false)
+        {
+            if($operationType == 'add')
+                $dtTime .= ' 24:00:00';
+            else //i.e. sustract
+                $dtTime .= ' 00:00:00';
+            //$endDtArr = explode("-",$dtTime);
+            // $endDtTimeStamp = mktime(0,0,0,$endDtArr[1],$endDtArr[2],$endDtArr[0]);
+
+        }
+
+        $tmp = explode(' ', $dtTime);
+        $endDtArr = explode("-",$tmp[0]);
+        $endTimeArr = explode(":", $tmp[1]);
+
+        $endDtTimeStamp = mktime($endTimeArr[0],$endTimeArr[1],$endTimeArr[2],$endDtArr[1],$endDtArr[2],$endDtArr[0]);
+
+
+        if(isset($endDtTimeStamp))
+            return($endDtTimeStamp);
+    }
+
     public static function dateDifference($endDt, $startDt)
     {
 
@@ -36,7 +62,6 @@ class Util_Date {
         return($leftDays);
     }
 
-
     public static function dateDifferenceInMinutes($endDt, $startDt)
     {
 
@@ -46,7 +71,6 @@ class Util_Date {
         $leftMinutes = floor(($endDtTimeStamp - $startDtTimeStamp) /60);
         return($leftMinutes);
     }
-
 
     public static function dateDifferenceInHourMinSecond($endDtTime,$startDtTime,$return = false,$format = true,$formatSeconds = false){
 
@@ -107,16 +131,6 @@ class Util_Date {
         }
 
 
-    }
-
-
-    public static function addDaysToDate($dt, $noOfDays)
-    {
-
-        $finalDt = date('Y-m-d', strtotime($dt. " + $noOfDays days"));
-
-
-        return($finalDt);
     }
 
     public static function addHoursToDate($dt, $noOfHours,$returnDtTime = false)
@@ -184,6 +198,14 @@ class Util_Date {
         return $aDays;
     }
 
+    public static function addDaysToDate($dt, $noOfDays)
+    {
+
+        $finalDt = date('Y-m-d', strtotime($dt. " + $noOfDays days"));
+
+
+        return($finalDt);
+    }
 
     public static function formatDateTimeInDayMonthYearHourMinAmPm($dtOrdtWithTime,$formatTime = false,$echo = true){
 
@@ -207,6 +229,12 @@ class Util_Date {
 
     }
 
+
+
+    /*
+     * @param  operationType string operationType can be either 'add' or 'substract'
+     */
+
     static function formatMinutesToHoursMins($time, $format = '%d:%d') {
         settype($time, 'integer');
         if ($time < 1) {
@@ -222,37 +250,6 @@ class Util_Date {
         return sprintf($format, $hours, $minutes);
         //echo convertToHoursMins(250, '%02d hours %02d minutes'); // should output 4 hours 17 minutes
 
-    }
-
-
-
-    /*
-     * @param  operationType string operationType can be either 'add' or 'substract'
-     */
-    public static function _timestamp($dtTime, $operationType = 'add')
-    {
-
-        $endDtPos = strpos($dtTime,':');
-        if($endDtPos === false)
-        {
-            if($operationType == 'add')
-                $dtTime .= ' 24:00:00';
-            else //i.e. sustract
-                $dtTime .= ' 00:00:00';
-            //$endDtArr = explode("-",$dtTime);
-            // $endDtTimeStamp = mktime(0,0,0,$endDtArr[1],$endDtArr[2],$endDtArr[0]);
-
-        }
-
-        $tmp = explode(' ', $dtTime);
-        $endDtArr = explode("-",$tmp[0]);
-        $endTimeArr = explode(":", $tmp[1]);
-
-        $endDtTimeStamp = mktime($endTimeArr[0],$endTimeArr[1],$endTimeArr[2],$endDtArr[1],$endDtArr[2],$endDtArr[0]);
-
-
-        if(isset($endDtTimeStamp))
-            return($endDtTimeStamp);
     }
 
 

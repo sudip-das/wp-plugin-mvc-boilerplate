@@ -1,5 +1,5 @@
 <?php
-namespace pluginname\component;
+namespace plugin_namespace\component;
 
 class Util_Request {
 
@@ -7,21 +7,29 @@ class Util_Request {
 
 
 //    static $_is_ajax;
-    static function is_ajax(){
+    static $_hostInfo = null;
+    static $_securePort = null;
+    static $_port = null;
+
+    static function is_admin(){
+
+        $request_is_frontend_ajax = self::is_frontend_ajax();
+
+        $request_is_admin = false;
+
+//        var_dump( is_admin() );
+//        die('skw');
 
 
-//        self::$_is_ajax = false;
-        if( defined('DOING_AJAX') && DOING_AJAX ) {
+        if(is_admin())
+            $request_is_admin = true;
 
-//            self::$_is_ajax = true;
-            return true;
-        }
-        return false;
+        if( $request_is_frontend_ajax )
+            $request_is_admin = false;
 
-//        return self::$_is_ajax;
+        return $request_is_admin;
 
     }
-
 
     static function is_frontend_ajax()
     {
@@ -47,27 +55,20 @@ class Util_Request {
         return false;
     }
 
-
-    static function is_admin(){
-
-        $request_is_frontend_ajax = self::is_frontend_ajax();
-
-        $request_is_admin = false;
-
-//        var_dump( is_admin() );
-//        die('skw');
+    static function is_ajax(){
 
 
-        if(is_admin())
-            $request_is_admin = true;
+//        self::$_is_ajax = false;
+        if( defined('DOING_AJAX') && DOING_AJAX ) {
 
-        if( $request_is_frontend_ajax )
-            $request_is_admin = false;
+//            self::$_is_ajax = true;
+            return true;
+        }
+        return false;
 
-        return $request_is_admin;
+//        return self::$_is_ajax;
 
     }
-
 
     static function is_localhost(){
 
@@ -83,8 +84,19 @@ class Util_Request {
         return false;
     }
 
+    static function get_the_user_ip() {
+        if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+//check ip from share internet
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        } elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+//to check ip is pass from proxy
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
 
-    static $_hostInfo = null;
     public function getHostInfo($schema='')
     {
         if(self::$_hostInfo===null)
@@ -122,14 +134,11 @@ class Util_Request {
             return self::$_hostInfo;
     }
 
-
-
     static function getIsSecureConnection()
     {
         return !empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'],'off');
     }
 
-    static $_securePort = null;
     public function getSecurePort()
     {
         if(self::$_securePort===null)
@@ -137,25 +146,11 @@ class Util_Request {
         return self::$_securePort;
     }
 
-    static $_port = null;
     static function getPort()
     {
         if(self::$_port===null)
             self::$_port=!self::getIsSecureConnection() && isset($_SERVER['SERVER_PORT']) ? (int)$_SERVER['SERVER_PORT'] : 80;
         return self::$_port;
-    }
-
-    static function get_the_user_ip() {
-        if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
-//check ip from share internet
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
-//to check ip is pass from proxy
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
-        }
-        return $ip;
     }
 
 }

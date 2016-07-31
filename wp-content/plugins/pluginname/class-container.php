@@ -6,7 +6,7 @@
  * Date: 17/03/2016
  * Time: 12:02 PM
  */
-namespace pluginname;
+namespace plugin_namespace;
 
 class Container implements \ArrayAccess
 {
